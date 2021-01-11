@@ -39,7 +39,7 @@ public class RegionCommand extends SimpleCommand {
 	}
 
 	private final EnumSet<Material> ContainerBlocks = EnumSet.of(
-			Material.DISPENSER, Material.CHEST, Material.FURNACE, Material.TRAPPED_CHEST, Material.HOPPER, Material.DROPPER,
+			Material.CHEST, Material.FURNACE, Material.TRAPPED_CHEST, Material.HOPPER,
 			Material.BARREL, Material.BLAST_FURNACE, Material.SMOKER);
 
 	private TreasureManager manager;
