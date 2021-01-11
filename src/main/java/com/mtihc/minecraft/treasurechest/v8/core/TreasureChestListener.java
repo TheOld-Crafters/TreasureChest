@@ -14,7 +14,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
-import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -130,62 +129,6 @@ class TreasureChestListener implements Listener {
 		}
 	}
 	
-	
-	
-	
-	
-	@EventHandler(priority=EventPriority.HIGH)
-    public void onBlockPowered(BlockPhysicsEvent event) {
-		Block block = event.getBlock();
-		switch (block.getType()) {
-		case DISPENSER:
-			break;
-		case DROPPER:
-			break;
-		default:
-			return;
-		}
-		
-		if (block.getBlockPower() == 0) {
-			// We don't care if a block loses power
-			return;
-		}
-		
-		if(!(block.getState() instanceof InventoryHolder)) {
-			// block is not an InventoryHolder
-			return;
-		}
-		
-		ITreasureChest tchest = control.getTreasureChest(block);
-		
-		if(tchest == null) {
-			// not a treasure
-			return;
-		}
-
-		if(!tchest.isUnlimited()) {
-			// not unlimited
-			return;
-		}
-		
-		if(block.getState() instanceof Dispenser) {
-			Dispenser dispenser = (Dispenser) block.getState();
-			if(isInventoryEmpty(dispenser.getInventory())) {
-				control.toInventory(tchest.getContainer().getContents(), tchest.getAmountOfRandomlyChosenStacks(), dispenser.getInventory());
-			}
-			// will dispense on it's own
-			// no need for dispenser.dispense()
-		}
-		else if(block.getState() instanceof Dropper) {
-			Dropper dropper = (Dropper) block.getState();
-			if(isInventoryEmpty(dropper.getInventory())) {
-				
-				control.toInventory(tchest.getContainer().getContents(), tchest.getAmountOfRandomlyChosenStacks(), dropper.getInventory());
-			}
-			// will dispense on it's own
-			// no need for dropper.drop()
-		}
-    }
 	
 	private boolean isInventoryEmpty(Inventory inventory) {
 		int n = inventory.getSize();
