@@ -321,7 +321,12 @@ public class TreasureManager extends TreasureDataFacade {
 				
 				String alreadyFoundMessage = tchest.getMessage(TreasureChest.Message.FOUND_ALREADY);
 				if(alreadyFoundMessage != null) {
-					player.sendMessage(ChatColor.GOLD + alreadyFoundMessage);
+					if (alreadyFoundMessage.contains("%time%")) {
+						String forgetStr = getTimeForgetString(whenToForgot(time, tchest.getForgetTime()), "n", "ó", "p", "mp");
+						player.sendMessage(ChatColor.GOLD + alreadyFoundMessage.replace("%time%", forgetStr));
+					} else {
+						player.sendMessage(ChatColor.GOLD + alreadyFoundMessage);
+					}
 				}
 				
 			}
@@ -622,6 +627,40 @@ public class TreasureManager extends TreasureDataFacade {
 		
 		// is "now" later than "forgot"? Then yes, is forgotten
 		return now.compareTo(forgot) > 0;
+	}
+
+	private Calendar whenToForgot(long foundTime, long forgetTime) {
+		// now
+		Calendar now = Calendar.getInstance();
+
+		Calendar forgot = Calendar.getInstance();
+		Calendar willForget = Calendar.getInstance();
+		willForget.setTimeInMillis(foundTime + forgetTime);
+
+		forgot.setTimeInMillis(willForget.getTimeInMillis() - now.getTimeInMillis());
+		return forgot;
+	}
+
+	private String getTimeForgetString(Calendar forget, String day, String hr, String min, String sec) {
+		long millis = forget.getTimeInMillis();
+
+		long secsIn = millis / 1000;
+		int realDays = (int) (secsIn / 86400);
+		int remainder = (int) (secsIn % 86400);
+		int realHours = remainder / 3600;
+		remainder = remainder % 3600;
+		int realMinutes = remainder / 60;
+		remainder = remainder % 60;
+		int realSeconds = remainder;
+
+		String timeStr;
+		if (secsIn > 0) {
+			timeStr = (realDays > 0 ? " " + realDays + day : "") + (realHours > 0 ? " " + realHours + hr : "") + (realMinutes > 0 ? " " + realMinutes + min : "") + (realSeconds > 0 ? " " + realSeconds + sec : "");
+			timeStr = timeStr.replaceFirst(" ", "");
+		} else {
+			timeStr = "0" + sec;
+		}
+		return timeStr;
 	}
 	
 
