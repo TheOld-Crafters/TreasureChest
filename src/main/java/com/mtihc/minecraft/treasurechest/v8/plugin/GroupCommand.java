@@ -345,6 +345,7 @@ public class GroupCommand extends SimpleCommand {
 			chestTmp.setUnlimited(tchest.isUnlimited());
 			chestTmp.setShared(tchest.isShared());
 			chestTmp.ignoreProtection(tchest.ignoreProtection());
+			chestTmp.setAmountOfRandomlyChosenStacks(tchest.getAmountOfRandomlyChosenStacks());
 			manager.setTreasure(chestTmp);
 		}
 		sender.sendMessage(ChatColor.GOLD + "Treasure(s) in group " + name + " have been copied.");
